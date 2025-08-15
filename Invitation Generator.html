@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invitation Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc, #feda6a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        input, textarea {
+            width: 350px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff6f61;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65c50;
+        }
+
+        #invitationCard {
+            display: none;
+            position: relative;
+            margin-top: 30px;
+            width: 500px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc, #feda6a);
+            border-radius: 25px;
+            padding: 40px 30px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            color: #fff;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #invitationCard h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        #invitationCard p {
+            font-size: 18px;
+            margin: 10px 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Invitation Generator</h1>
+
+    <input type="text" id="eventName" placeholder="Event Name"><br>
+    <input type="text" id="hostName" placeholder="Hosted By"><br>
+    <input type="text" id="eventDate" placeholder="Date (e.g., 20 Aug 2025)"><br>
+    <input type="text" id="eventTime" placeholder="Time (e.g., 6:00 PM)"><br>
+    <input type="text" id="eventLocation" placeholder="Location"><br>
+    <textarea id="eventMessage" placeholder="Additional Message" rows="4"></textarea><br>
+
+    <button onclick="generateInvitation()">Generate Invitation</button>
+    <button onclick="downloadInvitation()">Download Invitation</button>
+
+    <div id="invitationCard">
+        <h2 id="invTitle"></h2>
+        <p id="invHost">Hosted by: </p>
+        <p id="invDateTime">Date & Time: </p>
+        <p id="invLocation">📍 Location: </p>
+        <p id="invMessage">Message: </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function generateInvitation() {
+            var eventName = document.getElementById("eventName").value;
+            var hostName = document.getElementById("hostName").value;
+            var eventDate = document.getElementById("eventDate").value;
+            var eventTime = document.getElementById("eventTime").value;
+            var eventLocation = document.getElementById("eventLocation").value;
+            var eventMessage = document.getElementById("eventMessage").value;
+
+            if(eventName && hostName && eventDate && eventTime && eventLocation) {
+                document.getElementById("invTitle").innerText = eventName;
+                document.getElementById("invHost").innerText = "Hosted by: " + hostName;
+                document.getElementById("invDateTime").innerText = "Date & Time: " + eventDate + " at " + eventTime;
+                document.getElementById("invLocation").innerText = "📍 Location: " + eventLocation;
+                document.getElementById("invMessage").innerText = "Message: " + eventMessage;
+
+                document.getElementById("invitationCard").style.display = "block";
+            } else {
+                alert("Please fill all the fields!");
+            }
+        }
+
+        function downloadInvitation() {
+            var card = document.getElementById("invitationCard");
+            if(card.style.display === "none") {
+                alert("Please generate the invitation first!");
+                return;
+            }
+
+            html2canvas(card).then(function(canvas) {
+                var link = document.createElement("a");
+                link.download = "Invitation.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
